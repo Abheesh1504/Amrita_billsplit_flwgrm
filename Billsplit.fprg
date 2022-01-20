@@ -4,13 +4,16 @@
         <attribute name="name" value=""/>
         <attribute name="authors" value="Abheeh"/>
         <attribute name="about" value=""/>
-        <attribute name="saved" value="2022-01-20 04:44:29 PM"/>
+        <attribute name="saved" value="2022-01-20 05:13:38 PM"/>
         <attribute name="created" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA5OjExOjQ3IEFNOzI5Mjk="/>
-        <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA0OjQ0OjI5IFBNOzE7MzA1Mw=="/>
+        <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA1OjEzOjM4IFBNOzI7MzA1MQ=="/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
-        <body/>
+        <body>
+            <comment text="HELLO.. THIS IS SOME MOCK COMMENT&#13;&#10;"/>
+            <output expression="&quot;HELLO&quot;" newline="True"/>
+        </body>
     </function>
     <function name="split" type="None" variable="">
         <parameters>
