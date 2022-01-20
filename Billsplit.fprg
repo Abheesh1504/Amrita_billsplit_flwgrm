@@ -4,12 +4,12 @@
         <attribute name="name" value=""/>
         <attribute name="authors" value="Abheeh"/>
         <attribute name="about" value=""/>
-        <attribute name="saved" value="2022-01-20 07:02:36 PM"/>
+        <attribute name="saved" value="2022-01-20 07:08:08 PM"/>
         <attribute name="created" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA5OjExOjQ3IEFNOzI5Mjk="/>
         <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA1OjEzOjM4IFBNOzI7MzA1MQ=="/>
         <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjA7MDU6MjA6MjAgUE07MTsyNzIy"/>
         <attribute name="edited" value="SFA7TEFQVE9QLVM1T01URUQzOzIwMjItMDEtMjA7MDU6NDA6MDIgUE07MzsyNTk5"/>
-        <attribute name="edited" value="VmlzaHdhIEs7REVTS1RPUC1LUEI1VDFHOzIwMjItMDEtMjA7MDc6MDI6MzYgUE07MTM7MzIyNA=="/>
+        <attribute name="edited" value="VmlzaHdhIEs7REVTS1RPUC1LUEI1VDFHOzIwMjItMDEtMjA7MDc6MDg6MDggUE07MTQ7MzIzMA=="/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
@@ -36,7 +36,7 @@
                             <output expression="&quot;EQUAL SPLIT&quot;" newline="True"/>
                             <call expression="equalsplit(name,n,debt)"/>
                             <for variable="p" start="0" end="n-1" direction="inc" step="1">
-                                <output expression="name[p] &amp;&amp; &quot; has a debt of &quot; &amp;&amp; debt[p]" newline="True"/>
+                                <output expression="name[p] &amp; &quot; has a debt of &quot; &amp; debt[p]" newline="True"/>
                             </for>
                         </then>
                         <else>
