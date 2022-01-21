@@ -4,12 +4,13 @@
         <attribute name="name" value=""/>
         <attribute name="authors" value="Abheeh"/>
         <attribute name="about" value=""/>
-        <attribute name="saved" value="2022-01-21 05:49:01 PM"/>
+
+        <attribute name="saved" value="2022-01-21 05:39:56 PM"/>
         <attribute name="created" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA5OjExOjQ3IEFNOzI5Mjk="/>
         <attribute name="edited" value="SFA7TEFQVE9QLVM1T01URUQzOzIwMjItMDEtMjA7MDU6NDA6MDIgUE07MzsyNTk5"/>
         <attribute name="edited" value="VmlzaHdhIEs7REVTS1RPUC1LUEI1VDFHOzIwMjItMDEtMjA7MDc6MDg6MDggUE07MTQ7MzIzMA=="/>
-        <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA4OjU3OjE2IFBNOzM7MzA1OQ=="/>
-        <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjE7MDU6NDk6MDEgUE07NDsyNzM2"/>
+        <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjE7MDQ6NDU6MzcgUE07MjsyNzM4"/>
+        <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIxOzA1OjM5OjU2IFBNOzU7MzA2Mw=="/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
@@ -83,14 +84,13 @@
             <input variable="k"/>
             <declare name="totalpaid" type="Integer" array="False" size=""/>
             <assign variable="totalpaid" expression="0"/>
-            <declare name="f" type="String" array="False" size=""/>
-            <assign variable="f" expression="&quot;&quot;"/>
+            <declare name="f" type="String" array="True" size="k"/>
             <for variable="counter" start="0" end="k-1" direction="inc" step="1">
                 <output expression="&quot;enter the name of the person who paid&quot;" newline="True"/>
                 <declare name="payer" type="String" array="False" size=""/>
                 <declare name="paid" type="Real" array="False" size=""/>
                 <input variable="payer"/>
-                <assign variable="f" expression="payer"/>
+                <assign variable="f[counter]" expression="payer"/>
                 <output expression="&quot;Enter the amt paid by the person&quot;" newline="True"/>
                 <input variable="paid"/>
                 <assign variable="debt1[index(para1,payer,nn)]" expression="debt1[index(para1,payer,nn)] - (paid)"/>
@@ -101,34 +101,21 @@
             <assign variable="y" expression="1"/>
             <output expression="&quot;enter the number of people part of the transaction&quot;" newline="True"/>
             <input variable="x"/>
-            <if expression="x!=5">
-                <then>
-                    <for variable="i" start="0" end="x-1" direction="inc" step="1">
-                        <output expression="&quot;enter the name of the participant&quot;" newline="True"/>
-                        <input variable="namea"/>
-                        <assign variable="debt1[index(para1,namea,nn)]" expression="debt1[index(para1,namea,nn)] + (totalpaid/x)"/>
-                        <if expression="k==1">
-                            <then>
-                                <assign variable="bal[index(para1,namea,nn)*nn+index(para1,f,nn)]" expression="bal[index(para1,namea,nn)*nn+index(para1,f,nn)]+(totalpaid/x)"/>
-                            </then>
-                            <else/>
-                        </if>
-                    </for>
-                </then>
-                <else>
-                    <for variable="i" start="0" end="4" direction="inc" step="1">
-                        <assign variable="debt1[i]" expression="debt1[i] + (totalpaid/x)"/>
-                        <if expression="k==1">
-                            <then>
-                                <assign variable="bal[i*nn+index(para1,f,nn)]" expression="bal[i*nn+index(para1,f,nn)]+(totalpaid/x)"/>
-                            </then>
-                            <else>
-                                <assign variable="bal[index(para1,namea,nn)*nn+index(para1,f,nn)]" expression="bal[index(para1,namea,nn)*nn+index(para1,f,nn)]+(totalpaid/x)"/>
-                            </else>
-                        </if>
-                    </for>
-                </else>
-            </if>
+
+            <for variable="i" start="0" end="x-1" direction="inc" step="1">
+                <output expression="&quot;enter the name of the participant&quot;" newline="True"/>
+                <input variable="namea"/>
+                <assign variable="debt1[index(para1,namea,nn)]" expression="debt1[index(para1,namea,nn)] + (totalpaid/x)"/>
+                <for variable="counter" start="0" end="k-1" direction="inc" step="1">
+                    <if expression="f[counter]!=namea">
+                        <then>
+                            <assign variable="bal[index(para1,namea,nn)*nn+index(para1,f[counter],nn)]" expression="bal[index(para1,namea,nn)*nn+index(para1,f[counter],nn)]+(totalpaid/x)"/>
+                            <output expression="namea &amp; &quot; needs to pay &quot; &amp; f[counter] &amp; &quot; &quot; &amp; bal[index(para1,namea,nn)*nn+index(para1,f[counter],nn)]" newline="True"/>
+                        </then>
+                        <else/>
+                    </if>
+                </for>
+            </for>
         </body>
     </function>
     <function name="index" type="Integer" variable="t">
