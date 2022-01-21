@@ -9,7 +9,7 @@
         <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjA7MDU6MjA6MjAgUE07MTsyNzIy"/>
         <attribute name="edited" value="SFA7TEFQVE9QLVM1T01URUQzOzIwMjItMDEtMjA7MDU6NDA6MDIgUE07MzsyNTk5"/>
         <attribute name="edited" value="VmlzaHdhIEs7REVTS1RPUC1LUEI1VDFHOzIwMjItMDEtMjA7MDc6MDg6MDggUE07MTQ7MzIzMA=="/>
-        <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIxOzExOjIzOjQwIEFNOzQ7MzAzMA=="/>
+        <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIxOzExOjI3OjI2IEFNOzM7MzAzNw=="/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
@@ -20,7 +20,7 @@
             <declare name="name" type="String" array="True" size="n"/>
             <declare name="debt" type="Integer" array="True" size="n"/>
             <declare name="balance" type="Integer" array="True" size="n*11"/>
-            <output expression="&quot;enter the names&quot;" newline="True"/>
+            <output expression="&quot;enter the names od people&quot;" newline="True"/>
             <for variable="i" start="0" end="n-1" direction="inc" step="1">
                 <input variable="name[i]"/>
                 <assign variable="debt[i]" expression="0"/>
