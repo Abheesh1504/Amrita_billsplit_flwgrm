@@ -4,12 +4,12 @@
         <attribute name="name" value=""/>
         <attribute name="authors" value="Abheeh"/>
         <attribute name="about" value=""/>
-        <attribute name="saved" value="2022-01-20 08:57:16 PM"/>
+        <attribute name="saved" value="2022-01-21 04:45:37 PM"/>
         <attribute name="created" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA5OjExOjQ3IEFNOzI5Mjk="/>
-        <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjA7MDU6MjA6MjAgUE07MTsyNzIy"/>
         <attribute name="edited" value="SFA7TEFQVE9QLVM1T01URUQzOzIwMjItMDEtMjA7MDU6NDA6MDIgUE07MzsyNTk5"/>
         <attribute name="edited" value="VmlzaHdhIEs7REVTS1RPUC1LUEI1VDFHOzIwMjItMDEtMjA7MDc6MDg6MDggUE07MTQ7MzIzMA=="/>
         <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA4OjU3OjE2IFBNOzM7MzA1OQ=="/>
+        <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjE7MDQ6NDU6MzcgUE07MjsyNzM4"/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
@@ -19,7 +19,10 @@
             <input variable="n"/>
             <declare name="name" type="String" array="True" size="n"/>
             <declare name="debt" type="Integer" array="True" size="n"/>
-            <declare name="balance" type="Integer" array="True" size="n*11"/>
+            <declare name="balance" type="Integer" array="True" size="n*n"/>
+            <for variable="i" start="0" end="(n*n)-1" direction="inc" step="1">
+                <assign variable="balance[i]" expression="0"/>
+            </for>
             <output expression="&quot;enter the names&quot;" newline="True"/>
             <for variable="i" start="0" end="n-1" direction="inc" step="1">
                 <input variable="name[i]"/>
@@ -37,7 +40,7 @@
                         <if expression="choice1==1">
                             <then>
                                 <output expression="&quot;EQUAL SPLIT&quot;" newline="True"/>
-                                <call expression="equalsplit(name,n,debt)"/>
+                                <call expression="equalsplit(name,n,debt,balance)"/>
                                 <for variable="p" start="0" end="n-1" direction="inc" step="1">
                                     <output expression="name[p] &amp; &quot; has a debt of &quot; &amp; debt[p]" newline="True"/>
                                 </for>
@@ -59,6 +62,7 @@
             <parameter name="para1" type="String" array="True"/>
             <parameter name="nn" type="Integer" array="False"/>
             <parameter name="debt1" type="Integer" array="True"/>
+            <parameter name="bal" type="Integer" array="True"/>
         </parameters>
         <body>
             <declare name="k, counter" type="Integer" array="False" size=""/>
@@ -66,11 +70,14 @@
             <input variable="k"/>
             <declare name="totalpaid" type="Integer" array="False" size=""/>
             <assign variable="totalpaid" expression="0"/>
+            <declare name="f" type="String" array="False" size=""/>
+            <assign variable="f" expression="&quot;&quot;"/>
             <for variable="counter" start="0" end="k-1" direction="inc" step="1">
                 <output expression="&quot;enter the name of the person who paid&quot;" newline="True"/>
                 <declare name="payer" type="String" array="False" size=""/>
                 <declare name="paid" type="Real" array="False" size=""/>
                 <input variable="payer"/>
+                <assign variable="f" expression="payer"/>
                 <output expression="&quot;Enter the amt paid by the person&quot;" newline="True"/>
                 <input variable="paid"/>
                 <assign variable="debt1[index(para1,payer,nn)]" expression="debt1[index(para1,payer,nn)] - (paid)"/>
@@ -79,12 +86,19 @@
             <declare name="y, x, j, i" type="Integer" array="False" size=""/>
             <declare name="namea" type="String" array="False" size=""/>
             <assign variable="y" expression="1"/>
-            <output expression="&quot;enter the no of people participated in the split&quot;" newline="True"/>
+            <output expression="&quot;enter the number of people part of the transaction&quot;" newline="True"/>
             <input variable="x"/>
             <for variable="i" start="0" end="x-1" direction="inc" step="1">
                 <output expression="&quot;enter the name of the participant&quot;" newline="True"/>
                 <input variable="namea"/>
                 <assign variable="debt1[index(para1,namea,nn)]" expression="debt1[index(para1,namea,nn)] + (totalpaid/x)"/>
+                <if expression="k==1 &amp;&amp; namea!=f">
+                    <then>
+                        <assign variable="bal[index(para1,namea,nn)*nn+index(para1,f,nn)]" expression="bal[index(para1,namea,nn)*nn+index(para1,f,nn)]+(totalpaid/x)"/>
+                    </then>
+                    <else/>
+                </if>
+                <output expression="namea &amp; &quot; needs to pay &quot; &amp; f &amp; &quot; &quot; &amp; bal[index(para1,namea,nn)*nn+index(para1,f,nn)]" newline="True"/>
             </for>
         </body>
     </function>
