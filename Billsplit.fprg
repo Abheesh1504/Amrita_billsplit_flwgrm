@@ -4,12 +4,12 @@
         <attribute name="name" value=""/>
         <attribute name="authors" value="Abheeh"/>
         <attribute name="about" value=""/>
-        <attribute name="saved" value="2022-01-24 02:07:03 AM"/>
+        <attribute name="saved" value="2022-01-25 03:41:31 AM"/>
         <attribute name="created" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIwOzA5OjExOjQ3IEFNOzI5Mjk="/>
         <attribute name="edited" value="SFA7TEFQVE9QLVM1T01URUQzOzIwMjItMDEtMjA7MDU6NDA6MDIgUE07MzsyNTk5"/>
         <attribute name="edited" value="VmlzaHdhIEs7REVTS1RPUC1LUEI1VDFHOzIwMjItMDEtMjA7MDc6MDg6MDggUE07MTQ7MzIzMA=="/>
         <attribute name="edited" value="QWJoZWVoO0RFU0tUT1AtRTZVUEVWRjsyMDIyLTAxLTIxOzA1OjM5OjU2IFBNOzU7MzA2Mw=="/>
-        <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjQ7MDI6MDc6MDMgQU07MTI7Mjc2NA=="/>
+        <attribute name="edited" value="OTE3NzY7REVTS1RPUC1UUVUxTjVFOzIwMjItMDEtMjU7MDM6NDE6MzEgQU07MTU7Mjc2OA=="/>
     </attributes>
     <function name="Main" type="None" variable="">
         <parameters/>
@@ -43,7 +43,6 @@
                         <if expression="choice1==1">
                             <then>
                                 <call expression="equalsplit(name,n,debt,balance)"/>
-                                <output expression="&quot;Transaction added&quot;" newline="True"/>
                             </then>
                             <else>
                                 <if expression="choice1==2">
@@ -53,28 +52,22 @@
                                             <output expression="&quot;Invalid input&quot;" newline="True"/>
                                             <output expression="&quot;Please enter again&quot;" newline="True"/>
                                             <input variable="choice1"/>
-                                            <if expression="choice1==1">
-                                                <then>
-                                                    <call expression="equalsplit(name,n,debt,balance)"/>
-                                                    <output expression="&quot;Transaction added&quot;" newline="True"/>
-                                                </then>
-                                                <else/>
-                                            </if>
                                         </while>
                                     </else>
                                 </if>
-                                <comment text="unequal split"/>
+                                <call expression="unequalsplit(name,n,debt,balance)&#13;&#10;"/>
                             </else>
                         </if>
+                        <output expression="&quot;Transaction added&quot;" newline="True"/>
                     </then>
                     <else>
                         <declare name="g" type="String" array="False" size=""/>
                         <output expression="&quot;Input your name&quot;" newline="True"/>
                         <input variable="g"/>
-                        <if expression="ispart(para1,g,nn)==1">
+                        <if expression="ispart(name,g,n)==1">
                             <then/>
                             <else>
-                                <while expression="ispart(para1,g,nn)==0">
+                                <while expression="ispart(name,g,n)==0">
                                     <output expression="&quot;Invalid input&quot;" newline="True"/>
                                     <output expression="&quot;Please enter again&quot;" newline="True"/>
                                     <input variable="g"/>
@@ -103,7 +96,22 @@
             </while>
         </body>
     </function>
-    <function name="chackbalance" type="None" variable="">
+    <function name="addele" type="None" variable="">
+        <parameters>
+            <parameter name="arr" type="Real" array="True"/>
+            <parameter name="ele" type="Real" array="False"/>
+            <parameter name="l" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="arr" type="Real" array="True" size="l+1"/>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <for variable="i" start="0" end="l-1" direction="inc" step="1">
+                <assign variable="arr[i]" expression="arr[i]"/>
+            </for>
+            <assign variable="arr[l]" expression="ele"/>
+        </body>
+    </function>
+    <function name="checkbalance" type="None" variable="">
         <parameters>
             <parameter name="g" type="String" array="False"/>
             <parameter name="n" type="Integer" array="False"/>
@@ -132,16 +140,30 @@
                             <then>
                                 <declare name="c" type="Integer" array="False" size=""/>
                                 <assign variable="c" expression="(i*n)/((n*n)-1)"/>
-                                <output expression="g&amp;&quot; needs to pay &quot; &amp; name[b]  &amp;&quot; &quot;&amp; (balance[i]-balance[(i*n)-c*((n*n)-1)])" newline="True"/>
-                                <assign variable="b" expression="b+1"/>
+                                <if expression="balance[i]&gt;=0">
+                                    <then>
+                                        <output expression="g&amp;&quot; needs to pay &quot; &amp; name[b]  &amp;&quot; Rs &quot;&amp; (balance[i])" newline="True"/>
+                                    </then>
+                                    <else>
+                                        <output expression="g &amp; &quot; gets back Rs &quot; &amp; balance[i] &amp; &quot; from &quot; &amp;name[b]" newline="True"/>
+                                    </else>
+                                </if>
                             </then>
                             <else/>
                         </if>
                     </then>
                     <else/>
                 </if>
+                <assign variable="b" expression="b+1"/>
             </for>
-            <output expression="g &amp; &quot; needs to pay a total of Rs &quot; &amp; debt[s/n]" newline="True"/>
+            <if expression="debt[s/n]&gt;=0">
+                <then>
+                    <output expression="g &amp; &quot; needs to pay a total of Rs &quot; &amp; debt[s/n]" newline="True"/>
+                </then>
+                <else>
+                    <output expression="g &amp; &quot; gets back a total of Rs &quot; &amp; debt[s/n]" newline="True"/>
+                </else>
+            </if>
         </body>
     </function>
     <function name="equalsplit" type="None" variable="">
@@ -181,35 +203,46 @@
                 <assign variable="debt1[index(para1,payer,nn)]" expression="debt1[index(para1,payer,nn)] - (paid)"/>
                 <assign variable="totalpaid" expression="totalpaid+paid"/>
             </for>
-            <for variable="counter" start="0" end="k-1" direction="inc" step="1">
-                <assign variable="debt1[index(para1,payer,nn)]" expression="debt1[index(para1,payer,nn)]+(totalpaid/x)"/>
-            </for>
             <declare name="y, x, j, i" type="Integer" array="False" size=""/>
             <declare name="namea" type="String" array="False" size=""/>
             <output expression="&quot;enter the number of people part of the transaction&quot;" newline="True"/>
             <input variable="x"/>
+            <for variable="counter" start="0" end="k-1" direction="inc" step="1">
+                <assign variable="debt1[index(para1,f[counter],nn)]" expression="debt1[index(para1,f[counter],nn)]+(totalpaid/x)"/>
+            </for>
+            <declare name="share" type="Real" array="True" size="x-k"/>
+            <declare name="d" type="Integer" array="False" size=""/>
+            <declare name="str" type="String" array="True" size="x-k"/>
             <if expression="x==nn">
                 <then>
+                    <assign variable="d" expression="0"/>
                     <for variable="i" start="0" end="x-1" direction="inc" step="1">
                         <if expression="ispart(f,para1[i],k)==0">
                             <then>
+                                <assign variable="share[d]" expression="totalpaid/x"/>
+                                <assign variable="str[d]" expression="para1[i]"/>
+                                <assign variable="d" expression="d+1"/>
                                 <assign variable="debt1[i]" expression="debt1[i]+(totalpaid/x)"/>
-                                <call expression="updatebalance(k,bal,i)"/>
                             </then>
                             <else/>
                         </if>
                     </for>
+                    <for variable="counter" start="0" end="k-1" direction="inc" step="1">
+                        <assign variable="pay[counter]" expression="pay[counter]-(totalpaid/x)"/>
+                    </for>
+                    <call expression="updatebalance2(k,bal,f,pay,str,totalpaid,para1,nn,(x-k),share)"/>
                 </then>
                 <else>
-                    <output expression="&quot;Enter names of the other people involved in the transaction&quot;" newline="True"/>
+                    <output expression="&quot;Enter names of thepeople involved in the transaction other than those who paid&quot;" newline="True"/>
                     <declare name="abc" type="String" array="True" size="nn"/>
-                    <for variable="i" start="0" end="x-1" direction="inc" step="1">
+                    <assign variable="d" expression="0"/>
+                    <for variable="i" start="0" end="x-k-1" direction="inc" step="1">
                         <output expression="&quot;Enter name of person number &quot; &amp; (i+1)" newline="True"/>
                         <input variable="namea"/>
-                        <if expression="ispart(para1,namea,nn)==1">
+                        <if expression="ispart(para1,namea,nn)==1 &amp;&amp; ispart(f,namea,k)==0">
                             <then/>
                             <else>
-                                <while expression="ispart(para1,nn,namea)==0">
+                                <while expression="ispart(para1,namea,nn)==0">
                                     <output expression="&quot;Invalid input&quot;" newline="True"/>
                                     <output expression="&quot;Please enter again&quot;" newline="True"/>
                                     <input variable="namea"/>
@@ -217,11 +250,16 @@
                             </else>
                         </if>
                         <assign variable="abc[i]" expression="namea"/>
-                        <declare name="j" type="Integer" array="False" size=""/>
+                        <assign variable="str[d]" expression="abc[i]"/>
+                        <assign variable="share[d]" expression="totalpaid/x"/>
+                        <assign variable="d" expression="d+1"/>
                         <assign variable="j" expression="index(para1,namea,nn)"/>
                         <assign variable="debt1[j]" expression="debt1[j] + (totalpaid/x)"/>
                     </for>
-                    <call expression="updatebalance2(k,bal,f,pay,abc,(x-k),totalpaid,para1,nn)"/>
+                    <for variable="counter" start="0" end="k-1" direction="inc" step="1">
+                        <assign variable="pay[counter]" expression="pay[counter]-(totalpaid/x)"/>
+                    </for>
+                    <call expression="updatebalance2(k,bal,f,pay,str,totalpaid,para1,nn,(x-k),share)"/>
                 </else>
             </if>
         </body>
@@ -266,54 +304,186 @@
             </for>
         </body>
     </function>
-    <function name="updatebalance" type="None" variable="">
+    <function name="unequalsplit" type="None" variable="">
         <parameters>
-            <parameter name="k" type="Integer" array="False"/>
-            <parameter name="balance" type="Real" array="True"/>
-            <parameter name="i" type="Integer" array="False"/>
+            <parameter name="para1" type="String" array="True"/>
+            <parameter name="nn" type="Integer" array="False"/>
+            <parameter name="debt1" type="Real" array="True"/>
+            <parameter name="bal" type="Real" array="True"/>
         </parameters>
         <body>
-            <declare name="j" type="Integer" array="False" size=""/>
-            <assign variable="j" expression="(i*n)+index(para1,f[0],nn)"/>
-            <assign variable="bal[j]" expression="bal[(j)]+(totalpaid/x)"/>
-            <declare name="c" type="Integer" array="False" size=""/>
-            <assign variable="c" expression="(j*n)/((n*n)-1)"/>
-            <declare name="p" type="Integer" array="False" size=""/>
-            <assign variable="p" expression="(j*n)-c*((n*n)-1)"/>
-            <assign variable="balance[p]" expression="balance[p]-(totalpaid/x)"/>
-            <if expression="k==1">
-                <then/>
+            <declare name="k, counter" type="Integer" array="False" size=""/>
+            <output expression="&quot;Enter the no. of payers&quot;" newline="True"/>
+            <input variable="k"/>
+            <declare name="totalpaid" type="Real" array="False" size=""/>
+            <assign variable="totalpaid" expression="0"/>
+            <declare name="f" type="String" array="True" size="k"/>
+            <declare name="pay" type="Real" array="True" size="k"/>
+            <for variable="counter" start="0" end="k-1" direction="inc" step="1">
+                <output expression="&quot;enter the name of the person who paid&quot;" newline="True"/>
+                <declare name="payer" type="String" array="False" size=""/>
+                <declare name="paid" type="Real" array="False" size=""/>
+                <input variable="payer"/>
+                <if expression="ispart(para1,payer,nn)==1">
+                    <then/>
+                    <else>
+                        <while expression="ispart(para1,nn,payer)==0">
+                            <output expression="&quot;Invalid input&quot;" newline="True"/>
+                            <output expression="&quot;Please enter again&quot;" newline="True"/>
+                            <input variable="payer"/>
+                        </while>
+                    </else>
+                </if>
+                <assign variable="f[counter]" expression="payer"/>
+                <output expression="&quot;Enter the amt paid by the person&quot;" newline="True"/>
+                <input variable="paid"/>
+                <assign variable="pay[counter]" expression="paid"/>
+                <assign variable="debt1[index(para1,payer,nn)]" expression="debt1[index(para1,payer,nn)] - (paid)"/>
+                <assign variable="totalpaid" expression="totalpaid+paid"/>
+            </for>
+            <declare name="q" type="Integer" array="False" size=""/>
+            <output expression="&quot;Enter total number of people invloved in the transaction&quot;" newline="True"/>
+            <input variable="q"/>
+            <declare name="share" type="Real" array="True" size="q"/>
+            <declare name="share2" type="Real" array="True" size="q-k"/>
+            <declare name="abc" type="String" array="True" size="q"/>
+            <declare name="str" type="String" array="True" size="q-k"/>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <assign variable="i" expression="0"/>
+            <if expression="q==nn">
+                <then>
+                    <for variable="counter" start="0" end="nn-1" direction="inc" step="1">
+                        <assign variable="abc[counter]" expression="para1[counter]"/>
+                        <if expression="ispart(f,abc[counter],k)==0">
+                            <then>
+                                <assign variable="str[i]" expression="abc[counter]"/>
+                                <assign variable="i" expression="i+1"/>
+                            </then>
+                            <else/>
+                        </if>
+                    </for>
+                </then>
                 <else>
                     <for variable="counter" start="0" end="k-1" direction="inc" step="1">
-                        <assign variable="bal[(i*n)+index(para1,f[counter],nn)]" expression="bal[(i*n)+index(para1,f[counter],nn)]"/>
+                        <assign variable="abc[counter]" expression="f[counter]"/>
+                    </for>
+                    <output expression="&quot;Enter the names of other people involved in the transaction&quot;" newline="True"/>
+                    <for variable="counter" start="k" end="q-1" direction="inc" step="1">
+                        <input variable="abc[counter]"/>
+                        <assign variable="str[i]" expression="abc[counter]"/>
+                        <assign variable="i" expression="i+1"/>
                     </for>
                 </else>
             </if>
+            <declare name="choice" type="Integer" array="False" size=""/>
+            <output expression="&quot;Enter 1 for splitting by shares&quot; &amp; ToChar(13)&amp; &quot;Enter 2 for splitting by percentage&quot; &amp; ToChar(13)&amp; &quot;Enter 3 for splitting by different amounts&quot;" newline="True"/>
+            <input variable="choice"/>
+            <declare name="y" type="Integer" array="False" size=""/>
+            <assign variable="y" expression="0"/>
+            <if expression="choice==1">
+                <then>
+                    <declare name="shr" type="Integer" array="False" size=""/>
+                    <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                        <output expression="&quot;Enter number of shares of &quot; &amp; abc[counter]" newline="True"/>
+                        <input variable="shr"/>
+                        <assign variable="share[counter]" expression="(shr*totalpaid)/q"/>
+                        <if expression="ispart(f,abc[counter],k)==0">
+                            <then>
+                                <assign variable="share2[y]" expression="share[counter]"/>
+                                <assign variable="y" expression="y+1"/>
+                            </then>
+                            <else/>
+                        </if>
+                    </for>
+                </then>
+                <else>
+                    <declare name="sum" type="Integer" array="False" size=""/>
+                    <if expression="choice==2">
+                        <then>
+                            <declare name="percent" type="Real" array="True" size="q"/>
+                            <assign variable="sum" expression="0"/>
+                            <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                                <output expression="&quot;Enter percentage of total amount to be paid by &quot; &amp; abc[counter]" newline="True"/>
+                                <input variable="percent[counter]"/>
+                                <assign variable="sum" expression="sum+percent[counter]"/>
+                            </for>
+                            <while expression="sum!=100">
+                                <output expression="&quot;Invalid input: Sum of percentage not equal to 100&quot;" newline="True"/>
+                                <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                                    <output expression="&quot;Enter percentage of total amount to be paid by &quot; &amp; abc[counter]" newline="True"/>
+                                    <input variable="percent[counter]"/>
+                                    <assign variable="sum" expression="sum+percent[counter]"/>
+                                </for>
+                            </while>
+                            <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                                <assign variable="share[counter]" expression="(percent[counter]*totalpaid)/100"/>
+                                <if expression="ispart(f,abc[counter],k)==0">
+                                    <then>
+                                        <assign variable="share2[y]" expression="share[counter]"/>
+                                        <assign variable="y" expression="y+1"/>
+                                    </then>
+                                    <else/>
+                                </if>
+                            </for>
+                        </then>
+                        <else>
+                            <if expression="choice==3">
+                                <then>
+                                    <assign variable="sum" expression="0"/>
+                                    <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                                        <output expression="&quot;Enter amount to be paid by &quot; &amp; abc[counter]" newline="True"/>
+                                        <input variable="share[counter]"/>
+                                        <assign variable="sum" expression="sum+share[counter]"/>
+                                    </for>
+                                    <while expression="sum!=totalpaid">
+                                        <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                                            <output expression="&quot;Enter amount to be paid by &quot; &amp; abc[counter]" newline="True"/>
+                                            <input variable="share[counter]"/>
+                                            <assign variable="sum" expression="sum+share[counter]"/>
+                                        </for>
+                                    </while>
+                                    <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                                        <if expression="ispart(f,abc[counter],k)==0">
+                                            <then>
+                                                <assign variable="share2[y]" expression="share[counter]"/>
+                                                <assign variable="y" expression="y+1"/>
+                                            </then>
+                                            <else/>
+                                        </if>
+                                    </for>
+                                </then>
+                                <else/>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+            <for variable="counter" start="0" end="q-1" direction="inc" step="1">
+                <assign variable="debt1[index(para1,abc[counter],nn)]" expression="debt1[index(para1,abc[counter],nn)]+share[counter]"/>
+            </for>
+            <for variable="counter" start="0" end="k-1" direction="inc" step="1">
+                <assign variable="pay[counter]" expression="pay[counter]-share[counter]"/>
+            </for>
+            <call expression="updatebalance2(k,bal,f,pay,str,totalpaid,para1,nn,(q-k),share2)"/>
         </body>
     </function>
     <function name="updatebalance2" type="None" variable="">
         <parameters>
             <parameter name="k" type="Integer" array="False"/>
-            <parameter name="bal" type="Integer" array="True"/>
+            <parameter name="bal" type="Real" array="True"/>
             <parameter name="f" type="String" array="True"/>
             <parameter name="pay" type="Real" array="True"/>
             <parameter name="abc" type="String" array="True"/>
-            <parameter name="l" type="Integer" array="False"/>
             <parameter name="totalpaid" type="Real" array="False"/>
             <parameter name="name" type="String" array="True"/>
             <parameter name="n" type="Integer" array="False"/>
+            <parameter name="l" type="Integer" array="False"/>
+            <parameter name="shr" type="Real" array="True"/>
         </parameters>
         <body>
             <declare name="i" type="Integer" array="False" size=""/>
             <assign variable="i" expression="0"/>
             <declare name="j" type="Integer" array="False" size=""/>
-            <for variable="j" start="0" end="k-1" direction="inc" step="1">
-                <assign variable="pay[j]" expression="pay[j]-share"/>
-            </for>
-            <declare name="shr" type="Real" array="True" size="l"/>
-            <for variable="j" start="0" end="l-1" direction="inc" step="1">
-                <assign variable="shr[j]" expression="totalpaid/n"/>
-            </for>
             <for variable="j" start="0" end="k-1" direction="inc" step="1">
                 <declare name="r" type="Integer" array="False" size=""/>
                 <assign variable="r" expression="index(name,f[j],n)"/>
@@ -336,6 +506,12 @@
                         </else>
                     </if>
                 </while>
+                <if expression="pay[j]==0">
+                    <then/>
+                    <else>
+                        <call expression="addele(shr,(pay[j]*(-1)),l)"/>
+                    </else>
+                </if>
             </for>
         </body>
     </function>
